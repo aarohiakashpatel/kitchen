@@ -351,7 +351,7 @@
 
   <!-- about section -->
 
-  <section class="about_section layout_padding">
+  <section class="about_section" style="padding-top: 30px;">
     <div class="container">
       <div class="heading_container">
         <h2>
@@ -364,7 +364,8 @@
         </div>
         <div class="detail-box" style="width: 100%; text-align: left;">
           <div class="container">
-            <form>
+
+           <form>
                 <div class="form-group">
                     <label for="date">Select Event Date: </label>
                     <input type="date" class="form-control" id="date" placeholder="Select Event Date" onchange="dateChanged()">
@@ -386,23 +387,23 @@
     
                 <div class="btn btn-primary" onclick="addEvent()">Add</div>
             </form>
-    
+            <br>
             <div>
-                <h4>Report generated on: <b><span id="reportGeneratedDate"></span></b> </h4>
+                <h4>Grocery List for: <b><span id="reportGeneratedDate"></span></b> </h4>
                 <h5>Number of staff: <b><span id="noOfStaffDisplay"></span></b> </h5>
             </div>
     
             <ul class="nav nav-tabs">
-                <li class="active">
-                    <a href="#eventsTab" data-toggle="tab">Events</a>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#eventsTab" data-toggle="tab">Events</a>
                 </li>
-                <li>
-                    <a href="#summaryTab" data-toggle="tab">Summary</a>
+                <li class="nav-item">
+                    <a class="nav-link" href="#summaryTab" data-toggle="tab">Summary</a>
                 </li>
             </ul>
     
             <div class="tab-content">
-                <div id="eventsTab" class="tab-pane fade in active">
+                <div id="eventsTab" style="min-height: 300px;" class="tab-pane fade in active">
                     <div id="tableContainer">
                     </div>
                 </div>
