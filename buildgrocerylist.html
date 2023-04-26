@@ -19,8 +19,14 @@
   <link rel="stylesheet" type="text/css"
     href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
 
+  <!-- font-awesome -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
   <!-- bootstrap core css -->
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+  <!-- datepicker styles -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css">
 
   <!-- fonts style -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet" />
@@ -366,9 +372,17 @@
           <div class="container">
 
            <form>
+
+            
+
                 <div class="form-group">
                     <label for="date">Select Event Date: </label>
+                    <div class="datepicker date input-group">
                     <input type="date" class="form-control" id="date" placeholder="Select Event Date" onchange="dateChanged()">
+                      <div class="input-group-append">
+                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                      </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="noOfStaff">Number of bhakto: </label>
@@ -388,13 +402,24 @@
                 <div class="btn btn-primary" onclick="addEvent()">Add</div>
             </form>
             <br>
-            <div>
+            <div class="container" style="background-color: darkkhaki; padding-top: 10px;">
+              <div class="row">
+                <div class="col">
+                  <h5>Grocery List for: <b><span id="reportGeneratedDate"></span></b> </h5>
+                </div>
+                <div class="col">
+                  <h5>Number of Bhakto: <b><span id="noOfStaffDisplay"></span></b> </h5>
+                </div>
+              </div>
+            </div>
+            <br>
+            <!-- <div>
                 <h4>Grocery List for: <b><span id="reportGeneratedDate"></span></b> </h4>
                 <h5>Number of staff: <b><span id="noOfStaffDisplay"></span></b> </h5>
-            </div>
+            </div> -->
     
             <ul class="nav nav-tabs">
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a class="nav-link active" href="#eventsTab" data-toggle="tab">Events</a>
                 </li>
                 <li class="nav-item">
@@ -523,6 +548,8 @@
   <script type="text/javascript" src="js/bootstrap.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
   </script>
+   <!-- Datepicker -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
   <!-- owl carousel script 
     -->
   <script type="text/javascript">
