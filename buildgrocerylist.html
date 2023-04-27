@@ -60,7 +60,7 @@
 
     }
 
-    function eventNameChanged(){
+    function eventNameChanged() {
       const eventName = document.getElementById('eventName').value
       let eventNameDisplay = document.getElementById('eventNameDisplay')
 
@@ -280,10 +280,24 @@
     }
 
     function exportMenuToPDF(divName) {
-      var doc = new jsPDF();
-      doc.fromHTML(`<html><head><title>Print PDF</title></head><body>` + document.getElementById(divName).innerHTML + `</body></html>`);
-      var pdfTitle = document.getElementById("eventName").value + ' (' + document.getElementById('reportGeneratedDate').innerText + ')';
-      doc.save(pdfTitle + '.pdf');
+      // var doc = new jsPDF();
+      // doc.fromHTML(`<html><head><title>Print PDF</title></head><body>` + document.getElementById(divName).innerHTML + `</body></html>`);
+      // var pdfTitle = document.getElementById("eventName").value + ' (' + document.getElementById('reportGeneratedDate').innerText + ')';
+      // doc.save(pdfTitle + '.pdf');
+      let mywindow = window.open('', 'PRINT', 'height=650,width=900,top=100,left=150');
+
+      mywindow.document.write(`<html><head><title>Title</title>`);
+      mywindow.document.write('</head><body>');
+      mywindow.document.write(document.getElementById(divName).innerHTML);
+      mywindow.document.write('</body></html>');
+
+      mywindow.document.close(); // necessary for IE >= 10
+      mywindow.focus(); // necessary for IE >= 10*/
+
+      mywindow.print();
+      mywindow.close();
+
+      return true;
     }
 
   </script>
@@ -349,7 +363,8 @@
                   <div class="col">
                     <div class="form-group">
                       <label for="date">Event Name: </label>
-                      <input type="text" class="form-control" id="eventName" placeholder="Enter Event Name" onchange="eventNameChanged()">
+                      <input type="text" class="form-control" id="eventName" placeholder="Enter Event Name"
+                        onchange="eventNameChanged()">
                     </div>
                   </div>
                 </div>
