@@ -411,22 +411,6 @@
               </div>
             </form>
             <br>
-            <div class="container">
-              <div class="row" style="background-color: rgba(86,61,124,.15); padding-top: 10px;">
-                <div class="col">
-                  <h6><b>Event Name: </b><span id="eventNameDisplay"></span></h6>
-                </div>
-              </div><br>
-              <div class="row" style="background-color: rgba(86,61,124,.15); padding-top: 10px;">
-                <div class="col">
-                  <h6><b>Grocery List for:</b> <span id="reportGeneratedDate"></span></h6>
-                </div>
-                <div class="col">
-                  <h6><b>Number of Bhakto:</b> <span id="noOfStaffDisplay"></span></h6>
-                </div>
-              </div>
-            </div>
-            <br>
             <ul class="nav nav-tabs">
               <li class="nav-item">
                 <a class="nav-link active" href="#eventsTab" data-toggle="tab">Events</a>
@@ -440,11 +424,26 @@
               <div id="eventsTab" style="min-height: 300px;" class="tab-pane active"><br>
                 <div class="row">
                   <div class="col">
-                    <div class="btn btn-primary" onclick="exportMenuToPDF('tableContainer')">Print Menu</div>
+                    <div class="btn btn-primary" onclick="exportMenuToPDF('printDiv')">Print Menu</div>
                   </div>
-                </div>
-                <div id="tableContainer">
-                  <hr>
+                </div><br>
+                <div class="container" id="printDiv">
+                  <div class="row" style="background-color: rgba(86,61,124,.15); padding-top: 10px;">
+                    <div class="col">
+                      <h6><b>Event Name: </b><span id="eventNameDisplay"></span></h6>
+                    </div>
+                  </div><br>
+                  <div class="row" style="background-color: rgba(86,61,124,.15); padding-top: 10px;">
+                    <div class="col">
+                      <h6><b>Grocery List for:</b> <span id="reportGeneratedDate"></span></h6>
+                    </div>
+                    <div class="col">
+                      <h6><b>Number of Bhakto:</b> <span id="noOfStaffDisplay"></span></h6>
+                    </div>
+                  </div>
+                  <div id="tableContainer">
+                    <hr>
+                  </div>
                 </div>
               </div>
 
