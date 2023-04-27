@@ -36,6 +36,8 @@
   <!-- responsive style -->
   <link href="css/responsive.css" rel="stylesheet" />
 
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
+
   <!--Build Grocerry List Code-->
   <script>
     var menuItems = []
@@ -66,18 +68,7 @@
     }
 
     function dateChanged() {
-      const selectedDate = document.getElementById('date').value
-      let datePlaceholder = document.getElementById('reportGeneratedDate')
-
-      // Convert date to specific format MMM dd, yyyy
-      const currentDate = new Date(selectedDate)
-
-      const year = currentDate.getFullYear()
-      const month = currentDate.getMonth() + 1
-      const day = currentDate.getDate()
-      const formattedDate = ``
-
-      datePlaceholder.innerHTML = currentDate.toLocaleDateString()
+      document.getElementById('reportGeneratedDate').innerText = document.getElementById('date').value
     }
 
     function noOfStaffChanged() {
@@ -106,7 +97,7 @@
 
         let tableContainer = document.getElementById('tableContainer')
         //<div class="btn btn-primary" onclick="printToPdf('${currentEventNameId}')">Print</div>
-        tableContainer.innerHTML += `<br>
+        tableContainer.innerHTML = `<br>
             <div id="${currentEventNameId}Container">
                 <div style="background-color: #c1d5f1; padding: 5px; font-size: 20px; font-weight: bold;" id="${currentEventNameId}Caption">${$('.selectpicker').val()}
                     <button style="background-color: #c1d5f1;" class="btn" onclick="removeTableContainer('#${currentEventNameId}Container')">
@@ -120,7 +111,7 @@
                 
                 </table>
             </div>
-            `
+            ` + tableContainer.innerHTML
       }
 
       const table = document.getElementById(currentEventNameId + 'Table')
@@ -288,38 +279,12 @@
       })
     }
 
-    function printDiv(divId,
-      title) {
-
-      let mywindow = window.open('', 'PRINT', 'height=650,width=900,top=100,left=150');
-
-      mywindow.document.write(`<html><head><title>${title}</title>`);
-      mywindow.document.write('</head><body >');
-      mywindow.document.write(document.getElementById(divId).innerHTML);
-      mywindow.document.write('</body></html>');
-
-      mywindow.document.close(); // necessary for IE >= 10
-      mywindow.focus(); // necessary for IE >= 10*/
-
-      mywindow.print();
-      mywindow.close();
-
-      return true;
+    function exportMenuToPDF(divName) {
+      var doc = new jsPDF();
+      doc.fromHTML(`<html><head><title>Print PDF</title></head><body>` + document.getElementById(divName).innerHTML + `</body></html>`);
+      var pdfTitle = document.getElementById("eventName").value + ' (' + document.getElementById('reportGeneratedDate').innerText + ')';
+      doc.save(pdfTitle + '.pdf');
     }
-
-    function generatePdf(tableName) {
-      let table = document.getElementById('Event1Table')
-
-      let doc = new jsPDF();
-
-      doc.save('table.pdf')
-    }
-
-    function printToPdf(tableName) {
-      //generatePdf(tableName)
-      printDiv('Event1Table', 'TestTitle')
-    }
-
 
   </script>
   <!--Build Grocerry List Code-->
@@ -387,6 +352,8 @@
                       <input type="text" class="form-control" id="eventName" placeholder="Enter Event Name" onchange="eventNameChanged()">
                     </div>
                   </div>
+                </div>
+                <div class="row">
                   <div class="col">
                     <div class="form-group">
                       <label for="date">Select Event Date: </label>
@@ -446,7 +413,7 @@
             </div>
             <br>
             <ul class="nav nav-tabs">
-              <li class="nav-item active">
+              <li class="nav-item">
                 <a class="nav-link active" href="#eventsTab" data-toggle="tab">Events</a>
               </li>
               <li class="nav-item">
@@ -455,8 +422,14 @@
             </ul>
 
             <div class="tab-content">
-              <div id="eventsTab" style="min-height: 300px;" class="tab-pane fade in active">
+              <div id="eventsTab" style="min-height: 300px;" class="tab-pane active"><br>
+                <div class="row">
+                  <div class="col">
+                    <div class="btn btn-primary" onclick="exportMenuToPDF('tableContainer')">Print Menu</div>
+                  </div>
+                </div>
                 <div id="tableContainer">
+                  <hr>
                 </div>
               </div>
 
@@ -508,7 +481,6 @@
                   res(origData)
                 });
               })
-
             }
 
             function convertFirebaseObjectToObject(data) {
