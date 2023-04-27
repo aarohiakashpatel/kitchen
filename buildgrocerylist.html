@@ -26,7 +26,8 @@
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
 
   <!-- datepicker styles -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css">
 
   <!-- fonts style -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet" />
@@ -43,62 +44,69 @@
     var summaryEvents = []
 
     function removeTableContainer(tableContainerId) {
-        let indexToRemove = menuItemsAdded.findIndex((obj) => {
-            return obj.eventContainer == tableContainerId
-        })
+      let indexToRemove = menuItemsAdded.findIndex((obj) => {
+        return obj.eventContainer == tableContainerId
+      })
 
-        if (indexToRemove !== -1) {
-            menuItemsAdded.splice(indexToRemove, 1)
-        }
+      if (indexToRemove !== -1) {
+        menuItemsAdded.splice(indexToRemove, 1)
+      }
 
-        $(tableContainerId).remove()
+      $(tableContainerId).remove()
 
-        loadSummaryEvents()
+      loadSummaryEvents()
 
+    }
+
+    function eventNameChanged(){
+      const eventName = document.getElementById('eventName').value
+      let eventNameDisplay = document.getElementById('eventNameDisplay')
+
+      eventNameDisplay.innerHTML = eventName
     }
 
     function dateChanged() {
-        const selectedDate = document.getElementById('date').value
-        let datePlaceholder = document.getElementById('reportGeneratedDate')
+      const selectedDate = document.getElementById('date').value
+      let datePlaceholder = document.getElementById('reportGeneratedDate')
 
-        // Convert date to specific format MMM dd, yyyy
-        const currentDate = new Date(selectedDate)
+      // Convert date to specific format MMM dd, yyyy
+      const currentDate = new Date(selectedDate)
 
-        const year = currentDate.getFullYear()
-        const month = currentDate.getMonth() + 1
-        const day = currentDate.getDate()
-        const formattedDate = ``
+      const year = currentDate.getFullYear()
+      const month = currentDate.getMonth() + 1
+      const day = currentDate.getDate()
+      const formattedDate = ``
 
-        datePlaceholder.innerHTML = currentDate.toLocaleDateString()
+      datePlaceholder.innerHTML = currentDate.toLocaleDateString()
     }
 
     function noOfStaffChanged() {
-        const noOfStaff = document.getElementById('noOfStaff').value
-        let noOfStaffDisplay = document.getElementById('noOfStaffDisplay')
+      const noOfStaff = document.getElementById('noOfStaff').value
+      let noOfStaffDisplay = document.getElementById('noOfStaffDisplay')
 
-        noOfStaffDisplay.innerHTML = noOfStaff
+      noOfStaffDisplay.innerHTML = noOfStaff
     }
 
     function addEvent() {
 
-        const selectedDate = document.getElementById('date').value
-        const noOfStaff = document.getElementById('noOfStaff').value
+      const selectedDate = document.getElementById('date').value
+      const noOfStaff = document.getElementById('noOfStaff').value
 
-        // Validation
-        if (!selectedDate || !noOfStaff) {
-            if (!selectedDate) alert('Selected date should not be empty')
-            if (!noOfStaff) alert('No of staff should not be empty')
-            return
-        }
+      // Validation
+      if (!selectedDate || !noOfStaff) {
+        if (!selectedDate) alert('Selected date should not be empty')
+        if (!noOfStaff) alert('No of staff should not be empty')
+        return
+      }
 
-        const currentEventNameId = $('.selectpicker').val().replace(/\s+/g, '')
+      const currentEventNameId = $('.selectpicker').val().replace(/\s+/g, '')
 
-        if ($('#' + currentEventNameId + 'Table').length == 0) {
-            // If table does not exists, create table
+      if ($('#' + currentEventNameId + 'Table').length == 0) {
+        // If table does not exists, create table
 
-            let tableContainer = document.getElementById('tableContainer')
-            //<div class="btn btn-primary" onclick="printToPdf('${currentEventNameId}')">Print</div>
-            tableContainer.innerHTML += `<br>
+        let tableContainer = document.getElementById('tableContainer')
+        //<div class="btn btn-primary" onclick="printToPdf('${currentEventNameId}')">Print</div>
+        tableContainer.innerHTML += `<br>
             <div id="${currentEventNameId}Container">
                 <div style="background-color: #c1d5f1; padding: 5px; font-size: 20px; font-weight: bold;" id="${currentEventNameId}Caption">${$('.selectpicker').val()}
                     <button style="background-color: #c1d5f1;" class="btn" onclick="removeTableContainer('#${currentEventNameId}Container')">
@@ -113,207 +121,207 @@
                 </table>
             </div>
             `
-        }
+      }
 
-        const table = document.getElementById(currentEventNameId + 'Table')
+      const table = document.getElementById(currentEventNameId + 'Table')
 
-        table.innerHTML = ''
+      table.innerHTML = ''
 
-        createHeader(table,
-            ingredientNameHeaderText = 'Ingredient Name',
-            ingredientQtyHeaderText = 'Quantity',
-            ingredientLevelHeaderText = 'Measurement',
-            ingredientNotesHeaderText = 'Notes')
+      createHeader(table,
+        ingredientNameHeaderText = 'Ingredient Name',
+        ingredientQtyHeaderText = 'Quantity',
+        ingredientLevelHeaderText = 'Measurement',
+        ingredientNotesHeaderText = 'Notes')
 
-            listOfIngredients.forEach(member => {
-                const menuItemName = member['MenuItemName']
-                const ingredientName = member['IngredientName']
-                const ingredientQty = member['Quntity']
-                const ingredientLevel = member['Measurement']
-                const ingredientNotes = member['Notes']
+      listOfIngredients.forEach(member => {
+        const menuItemName = member['MenuItemName']
+        const ingredientName = member['IngredientName']
+        const ingredientQty = member['Quntity']
+        const ingredientLevel = member['Measurement']
+        const ingredientNotes = member['Notes']
 
-            if (menuItemName == $('.selectpicker').val())
-                createRow(table,
-                ingredientNameCellText = member['IngredientName'],
-                ingredientQtyCellText = (document.getElementById('noOfStaff').value/100) * member['Quntity'],
-                ingredientLevelCellText = member['Level'],
-                ingredientNoteCellText = member['Notes']
-                )
-        })
+        if (menuItemName == $('.selectpicker').val())
+          createRow(table,
+            ingredientNameCellText = member['IngredientName'],
+            ingredientQtyCellText = (document.getElementById('noOfStaff').value / 100) * member['Quntity'],
+            ingredientLevelCellText = member['Level'],
+            ingredientNoteCellText = member['Notes']
+          )
+      })
 
-        menuItemsAdded.push({
-            menuItemName: $('.selectpicker').val(),
-            eventContainer: `#${currentEventNameId}Container`
-        })
+      menuItemsAdded.push({
+        menuItemName: $('.selectpicker').val(),
+        eventContainer: `#${currentEventNameId}Container`
+      })
 
-        function createHeader(table, ingredientNameHeaderText, ingredientQtyHeaderText, ingredientLevelHeaderText, ingredientNotesHeaderText) {
-            // Header Creation
-            const header = document.createElement('tr')
+      function createHeader(table, ingredientNameHeaderText, ingredientQtyHeaderText, ingredientLevelHeaderText, ingredientNotesHeaderText) {
+        // Header Creation
+        const header = document.createElement('tr')
 
-            const ingredientNameHeader = document.createElement('th')
-            ingredientNameHeader.textContent = ingredientNameHeaderText
-            header.appendChild(ingredientNameHeader)
+        const ingredientNameHeader = document.createElement('th')
+        ingredientNameHeader.textContent = ingredientNameHeaderText
+        header.appendChild(ingredientNameHeader)
 
-            const ingredientQtyHeader = document.createElement('th')
-            ingredientQtyHeader.textContent = ingredientQtyHeaderText
-            header.appendChild(ingredientQtyHeader)
+        const ingredientQtyHeader = document.createElement('th')
+        ingredientQtyHeader.textContent = ingredientQtyHeaderText
+        header.appendChild(ingredientQtyHeader)
 
-            const ingredientLevelHeader = document.createElement('th')
-            ingredientLevelHeader.textContent = ingredientLevelHeaderText
-            header.appendChild(ingredientLevelHeader)
+        const ingredientLevelHeader = document.createElement('th')
+        ingredientLevelHeader.textContent = ingredientLevelHeaderText
+        header.appendChild(ingredientLevelHeader)
 
-            const ingredientNotesHeader = document.createElement('th')
-            ingredientNotesHeader.textContent = ingredientNotesHeaderText
-            header.appendChild(ingredientNotesHeader)
+        const ingredientNotesHeader = document.createElement('th')
+        ingredientNotesHeader.textContent = ingredientNotesHeaderText
+        header.appendChild(ingredientNotesHeader)
 
-            const thead = document.createElement('thead')
-            thead.appendChild(header)
+        const thead = document.createElement('thead')
+        thead.appendChild(header)
 
-            table.appendChild(thead)
-        }
+        table.appendChild(thead)
+      }
 
-        function createRow(table, ingredientNameCellText, ingredientQtyCellText, ingredientLevelCellText, ingredientNoteCellText) {
-            // Row Creation
-            const row = document.createElement('tr')
+      function createRow(table, ingredientNameCellText, ingredientQtyCellText, ingredientLevelCellText, ingredientNoteCellText) {
+        // Row Creation
+        const row = document.createElement('tr')
 
 
-            const ingredientNameCell = document.createElement('td')
-            ingredientNameCell.textContent = ingredientNameCellText
-            row.appendChild(ingredientNameCell)
+        const ingredientNameCell = document.createElement('td')
+        ingredientNameCell.textContent = ingredientNameCellText
+        row.appendChild(ingredientNameCell)
 
-            const ingredientQtyCell = document.createElement('td')
-            ingredientQtyCell.textContent = ingredientQtyCellText
-            row.appendChild(ingredientQtyCell)
+        const ingredientQtyCell = document.createElement('td')
+        ingredientQtyCell.textContent = ingredientQtyCellText
+        row.appendChild(ingredientQtyCell)
 
-            const ingredientLevelCell = document.createElement('td')
-            ingredientLevelCell.textContent = ingredientLevelCellText
-            row.appendChild(ingredientLevelCell)
+        const ingredientLevelCell = document.createElement('td')
+        ingredientLevelCell.textContent = ingredientLevelCellText
+        row.appendChild(ingredientLevelCell)
 
-            const ingredientNoteCell = document.createElement('td')
-            ingredientNoteCell.textContent = ingredientNoteCellText
-            row.appendChild(ingredientNoteCell)
+        const ingredientNoteCell = document.createElement('td')
+        ingredientNoteCell.textContent = ingredientNoteCellText
+        row.appendChild(ingredientNoteCell)
 
-            const tbody = document.createElement('tbody')
-            tbody.appendChild(row)
+        const tbody = document.createElement('tbody')
+        tbody.appendChild(row)
 
-            table.appendChild(tbody)
-        }
+        table.appendChild(tbody)
+      }
 
-        loadSummaryEvents()
+      loadSummaryEvents()
     }
 
     // For Summary
     function loadSummaryEvents() {
-        let summary = [];
-        menuItemsAdded.forEach(menuItemAdded => {
-            listOfIngredients.forEach(ingredientAdded => {
-                if (ingredientAdded['MenuItemName'] == menuItemAdded.menuItemName) {
-                    summary.push(ingredientAdded)
-                }
-            })
+      let summary = [];
+      menuItemsAdded.forEach(menuItemAdded => {
+        listOfIngredients.forEach(ingredientAdded => {
+          if (ingredientAdded['MenuItemName'] == menuItemAdded.menuItemName) {
+            summary.push(ingredientAdded)
+          }
         })
+      })
 
-        // Get unique staff values
-        let uniqueStaffIds = [...new Set(summary.map(a => a['IngredientName']))]
+      // Get unique staff values
+      let uniqueStaffIds = [...new Set(summary.map(a => a['IngredientName']))]
 
-        // Create array object that will store the values for display of summary
-        let summaryToDisplay = []
+      // Create array object that will store the values for display of summary
+      let summaryToDisplay = []
 
-        uniqueStaffIds.forEach(staff => {
-            summaryToDisplay.push({
-                ingredientName: staff,
-                ingredientUsedFor: [],
-                ingredientTotal: 0,
-                ingredientMeasurement: ''
-            })
+      uniqueStaffIds.forEach(staff => {
+        summaryToDisplay.push({
+          ingredientName: staff,
+          ingredientUsedFor: [],
+          ingredientTotal: 0,
+          ingredientMeasurement: ''
         })
+      })
 
-        // Get summary values by staff ID
-        summary.forEach(a => {
-            summaryToDisplay.forEach(summ => {   
-                if (a['IngredientName'] == summ.ingredientName) {
-                    summ.ingredientName = a['IngredientName']
-                    summ.ingredientUsedFor.push(a['MenuItemName'])
-                    summ.ingredientTotal += (document.getElementById('noOfStaff').value/100) * a['Quntity']
-                    summ.ingredientMeasurement = a['Level']
-
-                    //summ.Events.push(a['Event Name'])
-                    //summ.StaffName = a['Staff Name']
-                    //summ.Temp += (a['Temp Name'] * document.getElementById('noOfStaff').value)
-                }
-            })
-        })
-
-        // Display the values in summary tab
-        let summaryContainer = document.getElementById('summaryContainer')
-        const tbody = document.getElementById('summaryTBody')
-        tbody.innerHTML = ''
-
+      // Get summary values by staff ID
+      summary.forEach(a => {
         summaryToDisplay.forEach(summ => {
-            addRow(summ.ingredientName, summ.ingredientUsedFor, summ.ingredientTotal, summ.ingredientMeasurement)
+          if (a['IngredientName'] == summ.ingredientName) {
+            summ.ingredientName = a['IngredientName']
+            summ.ingredientUsedFor.push(a['MenuItemName'])
+            summ.ingredientTotal += (document.getElementById('noOfStaff').value / 100) * a['Quntity']
+            summ.ingredientMeasurement = a['Level']
 
-            function addRow(ingredientName, ingredientUsedFor, ingredientTotal, ingredientMeasurement) {
-                // staff id, staff name, events attending, temp total
-                // Row Creation
-                const row = document.createElement('tr')
-
-                const ingredientNameCell = document.createElement('td')
-                ingredientNameCell.textContent = ingredientName
-                row.appendChild(ingredientNameCell)
-
-                const ingredientUsedForCell = document.createElement('td')
-                ingredientUsedFor.forEach(menuItem => {
-                    ingredientUsedForCell.textContent += `${menuItem}/`
-                })
-                row.appendChild(ingredientUsedForCell)
-
-                const ingredientTotalCell = document.createElement('td')
-                ingredientTotalCell.textContent = ingredientTotal
-                row.appendChild(ingredientTotalCell)
-
-                const ingredientMeasurementCell = document.createElement('td')
-                ingredientMeasurementCell.textContent = ingredientMeasurement
-                row.appendChild(ingredientMeasurementCell)
-
-                tbody.appendChild(row)
-            }
+            //summ.Events.push(a['Event Name'])
+            //summ.StaffName = a['Staff Name']
+            //summ.Temp += (a['Temp Name'] * document.getElementById('noOfStaff').value)
+          }
         })
+      })
+
+      // Display the values in summary tab
+      let summaryContainer = document.getElementById('summaryContainer')
+      const tbody = document.getElementById('summaryTBody')
+      tbody.innerHTML = ''
+
+      summaryToDisplay.forEach(summ => {
+        addRow(summ.ingredientName, summ.ingredientUsedFor, summ.ingredientTotal, summ.ingredientMeasurement)
+
+        function addRow(ingredientName, ingredientUsedFor, ingredientTotal, ingredientMeasurement) {
+          // staff id, staff name, events attending, temp total
+          // Row Creation
+          const row = document.createElement('tr')
+
+          const ingredientNameCell = document.createElement('td')
+          ingredientNameCell.textContent = ingredientName
+          row.appendChild(ingredientNameCell)
+
+          const ingredientUsedForCell = document.createElement('td')
+          ingredientUsedFor.forEach(menuItem => {
+            ingredientUsedForCell.textContent += `${menuItem}/`
+          })
+          row.appendChild(ingredientUsedForCell)
+
+          const ingredientTotalCell = document.createElement('td')
+          ingredientTotalCell.textContent = ingredientTotal
+          row.appendChild(ingredientTotalCell)
+
+          const ingredientMeasurementCell = document.createElement('td')
+          ingredientMeasurementCell.textContent = ingredientMeasurement
+          row.appendChild(ingredientMeasurementCell)
+
+          tbody.appendChild(row)
+        }
+      })
     }
 
     function printDiv(divId,
-        title) {
+      title) {
 
-        let mywindow = window.open('', 'PRINT', 'height=650,width=900,top=100,left=150');
+      let mywindow = window.open('', 'PRINT', 'height=650,width=900,top=100,left=150');
 
-        mywindow.document.write(`<html><head><title>${title}</title>`);
-        mywindow.document.write('</head><body >');
-        mywindow.document.write(document.getElementById(divId).innerHTML);
-        mywindow.document.write('</body></html>');
+      mywindow.document.write(`<html><head><title>${title}</title>`);
+      mywindow.document.write('</head><body >');
+      mywindow.document.write(document.getElementById(divId).innerHTML);
+      mywindow.document.write('</body></html>');
 
-        mywindow.document.close(); // necessary for IE >= 10
-        mywindow.focus(); // necessary for IE >= 10*/
+      mywindow.document.close(); // necessary for IE >= 10
+      mywindow.focus(); // necessary for IE >= 10*/
 
-        mywindow.print();
-        mywindow.close();
+      mywindow.print();
+      mywindow.close();
 
-        return true;
+      return true;
     }
 
     function generatePdf(tableName) {
-        let table = document.getElementById('Event1Table')
+      let table = document.getElementById('Event1Table')
 
-        let doc = new jsPDF();
+      let doc = new jsPDF();
 
-        doc.save('table.pdf')
+      doc.save('table.pdf')
     }
 
     function printToPdf(tableName) {
-        //generatePdf(tableName)
-        printDiv('Event1Table','TestTitle')
+      //generatePdf(tableName)
+      printDiv('Event1Table', 'TestTitle')
     }
 
 
-</script>
+  </script>
   <!--Build Grocerry List Code-->
 
 </head>
@@ -366,171 +374,191 @@
       </div>
       <div class="box">
         <div class="img-box">
-        
+
         </div>
         <div class="detail-box" style="width: 100%; text-align: left;">
           <div class="container">
-
-           <form>
-
-            
-
-                <div class="form-group">
-                    <label for="date">Select Event Date: </label>
-                    <div class="datepicker date input-group">
-                    <input type="date" class="form-control" id="date" placeholder="Select Event Date" onchange="dateChanged()">
-                      <div class="input-group-append">
-                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+            <form style="background-color: rgba(63, 61, 65, 0.15); padding: 10px;">
+              <div class="container">
+                <div class="row">
+                  <div class="col">
+                    <div class="form-group">
+                      <label for="date">Event Name: </label>
+                      <input type="text" class="form-control" id="eventName" placeholder="Enter Event Name" onchange="eventNameChanged()">
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label for="date">Select Event Date: </label>
+                      <div class="datepicker date input-group">
+                        <input type="date" class="form-control" id="date" placeholder="Select Event Date"
+                          onchange="dateChanged()">
+                        <div class="input-group-append">
+                          <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
                       </div>
                     </div>
+                  </div>
                 </div>
-                <div class="form-group">
-                    <label for="noOfStaff">Number of bhakto: </label>
-                    <input type="number" class="form-control" id="noOfStaff" placeholder="Enter number of bhakto"
+                <div class="row">
+                  <div class="col">
+                    <div class="form-group">
+                      <label for="noOfStaff">Number of bhakto: </label>
+                      <input type="number" class="form-control" id="noOfStaff" placeholder="Enter number of bhakto"
                         onchange="noOfStaffChanged()">
+                    </div>
+                  </div>
                 </div>
-    
-                <div class="form-group">
-                    <label for="dropdown">Select a Menu Item to Add: </label>
-                    <select class="selectpicker form-control" data-live-search="true" id="dropdown">
+                <div class="row">
+                  <div class="col">
+                    <div class="form-group">
+                      <label for="dropdown">Select a Menu Item to Add: </label>
+                      <select class="selectpicker form-control" data-live-search="true" id="dropdown">
                         <option value="">Select an event</option>
                         <option value="">Option 1</option>
                         <option value="">Option 2</option>
-                    </select>
+                      </select>
+                    </div>
+                  </div>
                 </div>
-    
-                <div class="btn btn-primary" onclick="addEvent()">Add</div>
+                <div class="row">
+                  <div class="col">
+                    <div class="btn btn-primary" onclick="addEvent()">Add Menu Item</div>
+                  </div>
+                </div>
+              </div>
             </form>
             <br>
-            <div class="container" style="background-color: darkkhaki; padding-top: 10px;">
-              <div class="row">
+            <div class="container">
+              <div class="row" style="background-color: rgba(86,61,124,.15); padding-top: 10px;">
                 <div class="col">
-                  <h5>Grocery List for: <b><span id="reportGeneratedDate"></span></b> </h5>
+                  <h6><b>Event Name: </b><span id="eventNameDisplay"></span></h6>
+                </div>
+              </div><br>
+              <div class="row" style="background-color: rgba(86,61,124,.15); padding-top: 10px;">
+                <div class="col">
+                  <h6><b>Grocery List for:</b> <span id="reportGeneratedDate"></span></h6>
                 </div>
                 <div class="col">
-                  <h5>Number of Bhakto: <b><span id="noOfStaffDisplay"></span></b> </h5>
+                  <h6><b>Number of Bhakto:</b> <span id="noOfStaffDisplay"></span></h6>
                 </div>
               </div>
             </div>
             <br>
-            <!-- <div>
-                <h4>Grocery List for: <b><span id="reportGeneratedDate"></span></b> </h4>
-                <h5>Number of staff: <b><span id="noOfStaffDisplay"></span></b> </h5>
-            </div> -->
-    
             <ul class="nav nav-tabs">
-                <li class="nav-item active">
-                    <a class="nav-link active" href="#eventsTab" data-toggle="tab">Events</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#summaryTab" data-toggle="tab">Summary</a>
-                </li>
+              <li class="nav-item active">
+                <a class="nav-link active" href="#eventsTab" data-toggle="tab">Events</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#summaryTab" data-toggle="tab">Summary</a>
+              </li>
             </ul>
-    
+
             <div class="tab-content">
-                <div id="eventsTab" style="min-height: 300px;" class="tab-pane fade in active">
-                    <div id="tableContainer">
-                    </div>
+              <div id="eventsTab" style="min-height: 300px;" class="tab-pane fade in active">
+                <div id="tableContainer">
                 </div>
-    
-                <div id="summaryTab" class="tab-pane fade">
-                    <div id="summaryContainer">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Ingredient Name</th>
-                                    <th>Ingredient Used For</th>
-                                    <th>Ingredient Total</th>
-                                    <th>Measurement</th>
-                                </tr>
-                            </thead>
-                            <tbody id="summaryTBody">
-    
-                            </tbody>
-                        </table>
-                    </div>
+              </div>
+
+              <div id="summaryTab" class="tab-pane fade">
+                <div id="summaryContainer">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Ingredient Name</th>
+                        <th>Ingredient Used For</th>
+                        <th>Ingredient Total</th>
+                        <th>Measurement</th>
+                      </tr>
+                    </thead>
+                    <tbody id="summaryTBody">
+
+                    </tbody>
+                  </table>
                 </div>
+              </div>
             </div>
-    
-        </div>
-        
-        <script rel="display: none;" type="module">
+
+          </div>
+
+          <script rel="display: none;" type="module">
             import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js'
-    
+
             import { getDatabase, ref, get, onValue } from 'https://www.gstatic.com/firebasejs/9.10.0/firebase-database.js'
-    
+
             // TODO: Replace the following with your app's Firebase project configuration
             const firebaseConfig = {
-                databaseUrl: 'https://hariprabodham-dee94-default-rtdb.firebaseio.com/',
-                projectId: 'hariprabodham-dee94'
+              databaseUrl: 'https://hariprabodham-dee94-default-rtdb.firebaseio.com/',
+              projectId: 'hariprabodham-dee94'
             };
-    
+
             // Initialize Firebase
             const app = initializeApp(firebaseConfig);
-    
+
             // Initialize Realtime Database and get a reference to the service
             const db = getDatabase(app);
-    
+
             const dbRef = ref(db, '10OHFolC_gphW4mYtIAZe_37_qQPHSBy6l6-X5vS1cBA');
-    
+
             function listenToFirebase(dbRef) {
-                return new Promise((res, rej) => {
-                    onValue(dbRef, (snapshot) => {
-                        let origData = convertFirebaseObjectToObject(snapshot);
-    
-                        res(origData)
-                    });
-                })
-    
+              return new Promise((res, rej) => {
+                onValue(dbRef, (snapshot) => {
+                  let origData = convertFirebaseObjectToObject(snapshot);
+
+                  res(origData)
+                });
+              })
+
             }
-    
+
             function convertFirebaseObjectToObject(data) {
-                let object = [];
-                data.forEach(datum => {
-                    object.push(JSON.parse(JSON.stringify(datum)));
-                });
-                console.log(object)
-    
-                return object;
+              let object = [];
+              data.forEach(datum => {
+                object.push(JSON.parse(JSON.stringify(datum)));
+              });
+              console.log(object)
+
+              return object;
             }
-    
+
             $(document).ready(function () {
-    
-                $('.selectpicker').selectpicker();
-    
-                $('.selectpicker').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {   });
-    
-                $('.selectpicker').on('show.bs.select', function (e) {
-                });
-    
-                $('.selectpicker').on('hide.bs.select', function (e) {
-                });
-    
-                $('.selectpicker').on('rendered.bs.select', function (e) { });
-    
-                $('.selectpicker').on('refreshed.bs.select', function (e) {  });
+
+              $('.selectpicker').selectpicker();
+
+              $('.selectpicker').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) { });
+
+              $('.selectpicker').on('show.bs.select', function (e) {
+              });
+
+              $('.selectpicker').on('hide.bs.select', function (e) {
+              });
+
+              $('.selectpicker').on('rendered.bs.select', function (e) { });
+
+              $('.selectpicker').on('refreshed.bs.select', function (e) { });
             });
-    
+
             listenToFirebase(dbRef).then(data => {
-                menuItems = Object.values(data[2])
-                listOfIngredients = Object.values(data[1])
-    
-                $('.selectpicker').empty();
-                $('.selectpicker').append('<option value="" selected>Select Menu Item</option>');
-    
-                menuItems.forEach(datum => {
-                    $('.selectpicker').append('<option value="' + datum['MenuItemName'] + '">' + datum['MenuItemName'] + '</option>');
-                })
-    
-                $('.selectpicker').selectpicker('refresh');
+              menuItems = Object.values(data[2])
+              listOfIngredients = Object.values(data[1])
+
+              $('.selectpicker').empty();
+              $('.selectpicker').append('<option value="" selected>Select Menu Item</option>');
+
+              menuItems.forEach(datum => {
+                $('.selectpicker').append('<option value="' + datum['MenuItemName'] + '">' + datum['MenuItemName'] + '</option>');
+              })
+
+              $('.selectpicker').selectpicker('refresh');
             });
-    
-        </script>
-        <!-- Include Bootstrap and Selectpicker JS 
+
+          </script>
+          <!-- Include Bootstrap and Selectpicker JS 
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
-        --></div>
+        -->
+        </div>
       </div>
     </div>
   </section>
@@ -548,8 +576,9 @@
   <script type="text/javascript" src="js/bootstrap.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
   </script>
-   <!-- Datepicker -->
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+  <!-- Datepicker -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
   <!-- owl carousel script 
     -->
   <script type="text/javascript">
