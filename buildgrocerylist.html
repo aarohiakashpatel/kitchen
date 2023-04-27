@@ -39,12 +39,13 @@
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
 
   <style type="text/css" media="print">
-    @page 
-    {
-        size: auto;   /* auto is the initial value */
-        margin: 0mm;  /* this affects the margin in the printer settings */
+    @page {
+      size: auto;
+      /* auto is the initial value */
+      margin: 0mm;
+      /* this affects the margin in the printer settings */
     }
-</style>
+  </style>
 
   <!--Build Grocerry List Code-->
   <script>
@@ -54,6 +55,10 @@
     var summaryEvents = []
 
     function removeTableContainer(tableContainerId) {
+
+      let tableContID = tableContainerId + "Container"
+      let menuContID = tableContainerId + "menuList"
+
       let indexToRemove = menuItemsAdded.findIndex((obj) => {
         return obj.eventContainer == tableContainerId
       })
@@ -62,7 +67,11 @@
         menuItemsAdded.splice(indexToRemove, 1)
       }
 
-      $(tableContainerId).remove()
+      //Remove item table
+      $(tableContID).remove()
+
+      //Remove item from menu
+      $(menuContID).remove()
 
       loadSummaryEvents()
 
@@ -91,13 +100,6 @@
       const selectedDate = document.getElementById('date').value
       const noOfStaff = document.getElementById('noOfStaff').value
 
-      // Validation
-      if (!selectedDate || !noOfStaff) {
-        if (!selectedDate) alert('Selected date should not be empty')
-        if (!noOfStaff) alert('No of staff should not be empty')
-        return
-      }
-
       const currentEventNameId = $('.selectpicker').val().replace(/\s+/g, '')
 
       if ($('#' + currentEventNameId + 'Table').length == 0) {
@@ -108,18 +110,29 @@
         tableContainer.innerHTML = `<br>
             <div id="${currentEventNameId}Container">
                 <div style="background-color: #c1d5f1; padding: 5px; font-size: 20px; font-weight: bold;" id="${currentEventNameId}Caption">${$('.selectpicker').val()}
-                    <button style="background-color: #c1d5f1;" class="btn" onclick="removeTableContainer('#${currentEventNameId}Container')">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
-                        </svg>
-                    </button>
                 </div>
             
-                <table class="table" id="${currentEventNameId}Table">
+                <table style="width: 100%;" cellpadding="5px" cellspacing="5px" class="table" id="${currentEventNameId}Table">
                 
                 </table>
             </div>
             ` + tableContainer.innerHTML
+
+        //update menu list
+        let menuItems = document.getElementById('menuContainer')
+        menuItems.innerHTML = `
+                <div class="row" id="${currentEventNameId}menuList">
+                  <div class="col">
+                    <h5>${$('.selectpicker').val()}
+                      <button class="btn" onclick="removeTableContainer('#${currentEventNameId}')">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                              <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                          </svg>
+                      </button>
+                    </h5>
+                  </div>
+                </div>
+        ` + menuItems.innerHTML
       }
 
       const table = document.getElementById(currentEventNameId + 'Table')
@@ -156,21 +169,27 @@
       function createHeader(table, ingredientNameHeaderText, ingredientQtyHeaderText, ingredientLevelHeaderText, ingredientNotesHeaderText) {
         // Header Creation
         const header = document.createElement('tr')
+        
+        header.style = "background-color: rgb(236, 236, 236);"
 
         const ingredientNameHeader = document.createElement('th')
         ingredientNameHeader.textContent = ingredientNameHeaderText
+        ingredientNameHeader.style = "text-align: left; padding: 10px;"
         header.appendChild(ingredientNameHeader)
 
         const ingredientQtyHeader = document.createElement('th')
         ingredientQtyHeader.textContent = ingredientQtyHeaderText
+        ingredientQtyHeader.style = "text-align: left; padding: 10px;"
         header.appendChild(ingredientQtyHeader)
 
         const ingredientLevelHeader = document.createElement('th')
         ingredientLevelHeader.textContent = ingredientLevelHeaderText
+        ingredientLevelHeader.style = "text-align: left; padding: 10px;"
         header.appendChild(ingredientLevelHeader)
 
         const ingredientNotesHeader = document.createElement('th')
         ingredientNotesHeader.textContent = ingredientNotesHeaderText
+        ingredientNotesHeader.style = "text-align: left; padding: 10px;"
         header.appendChild(ingredientNotesHeader)
 
         const thead = document.createElement('thead')
@@ -186,18 +205,22 @@
 
         const ingredientNameCell = document.createElement('td')
         ingredientNameCell.textContent = ingredientNameCellText
+        ingredientNameCell.style = "padding: 10px;"
         row.appendChild(ingredientNameCell)
 
         const ingredientQtyCell = document.createElement('td')
         ingredientQtyCell.textContent = ingredientQtyCellText
+        ingredientQtyCell.style = "padding: 10px;"
         row.appendChild(ingredientQtyCell)
 
         const ingredientLevelCell = document.createElement('td')
         ingredientLevelCell.textContent = ingredientLevelCellText
+        ingredientLevelCell.style = "padding: 10px;"
         row.appendChild(ingredientLevelCell)
 
         const ingredientNoteCell = document.createElement('td')
         ingredientNoteCell.textContent = ingredientNoteCellText
+        ingredientNoteCell.style = "padding: 10px;"
         row.appendChild(ingredientNoteCell)
 
         const tbody = document.createElement('tbody')
@@ -225,7 +248,7 @@
 
       // Create array object that will store the values for display of summary
       let summaryToDisplay = []
-      
+
       uniqueStaffIds.forEach(staff => {
         summaryToDisplay.push({
           ingredientName: staff,
@@ -238,10 +261,10 @@
       // Get summary values by staff ID
       summary.forEach(a => {
         summaryToDisplay.forEach(summ => {
-          if(a['IngredientName'] == summ.ingredientName) {
+          if (a['IngredientName'] == summ.ingredientName) {
             summ.ingredientName = a['IngredientName']
-            
-            if(!summ.ingredientUsedFor.includes(a['MenuItemName']))
+
+            if (!summ.ingredientUsedFor.includes(a['MenuItemName']))
               summ.ingredientUsedFor.push(a['MenuItemName'])
 
             summ.ingredientTotal += (document.getElementById('noOfStaff').value / 100) * a['Quntity']
@@ -253,7 +276,7 @@
           }
         })
       })
-      
+
       // Display the values in summary tab
       let summaryContainer = document.getElementById('summaryContainer')
       const tbody = document.getElementById('summaryTBody')
@@ -269,20 +292,24 @@
 
           const ingredientNameCell = document.createElement('td')
           ingredientNameCell.textContent = ingredientName
+          ingredientNameCell.style = "text-align: left; padding: 10px;"
           row.appendChild(ingredientNameCell)
 
           const ingredientUsedForCell = document.createElement('td')
           ingredientUsedFor.forEach(menuItem => {
             ingredientUsedForCell.textContent += `${menuItem}/`
           })
+          ingredientUsedForCell.style = "text-align: left; padding: 10px;"
           row.appendChild(ingredientUsedForCell)
 
           const ingredientTotalCell = document.createElement('td')
           ingredientTotalCell.textContent = ingredientTotal
+          ingredientTotalCell.style = "text-align: left; padding: 10px;"
           row.appendChild(ingredientTotalCell)
 
           const ingredientMeasurementCell = document.createElement('td')
           ingredientMeasurementCell.textContent = ingredientMeasurement
+          ingredientMeasurementCell.style = "text-align: left; padding: 10px;"
           row.appendChild(ingredientMeasurementCell)
 
           tbody.appendChild(row)
@@ -424,144 +451,198 @@
               </div>
             </form>
             <br>
-            <ul class="nav nav-tabs">
-              <li class="nav-item">
-                <a class="nav-link active" href="#eventsTab" data-toggle="tab">Events</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#summaryTab" data-toggle="tab">Summary</a>
-              </li>
-            </ul>
-
-            <div class="tab-content">
-              <div id="eventsTab" style="min-height: 300px;" class="tab-pane active"><br>
+            <div class="container">
                 <div class="row">
                   <div class="col">
                     <div class="btn btn-primary" onclick="exportMenuToPDF('printDiv')">Print Menu</div>
                   </div>
                 </div><br>
-                <div class="container" id="printDiv">
-                  <div class="row" style="background-color: rgba(86,61,124,.15); padding-top: 10px;">
+                <div id="printDiv">
+                  <!-- <div class="row" style="background-color: rgba(86,61,124,.15); padding-top: 10px;"> -->
+                  <div class="row" style="padding-top: 10px;">
                     <div class="col">
-                      <h6><b>Event Name: </b><span id="eventNameDisplay"></span></h6>
+                      <hr style="height: 15px; border: 0; box-shadow: inset 0 12px 12px -12px rgba(9, 84, 132);" />
+                      <table cellpadding="10px" style="width:100%;">
+                        <tr style="width:100%;">
+                          <td style="width:20%;" rowspan="3">
+                            <img src="images/logo.jpg" width="65%" />
+                          </td>
+                          <td style="width:80%;">
+                            <h6><b>Event Name: </b><span id="eventNameDisplay"></span></h6>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <h6><b>Date:</b> <span id="reportGeneratedDate"></span></h6>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <h6><b>Number of Bhakto:</b> <span id="noOfStaffDisplay"></span></h6>
+                          </td>
+                        </tr>
+                      </table>
+                      <hr style="border-top: 3px double #095484;" />
                     </div>
-                  </div><hr>
-                  <div class="row" style="background-color: rgba(86,61,124,.15); padding-top: 10px;">
-                    <div class="col">
-                      <h6><b>Grocery List for:</b> <span id="reportGeneratedDate"></span></h6>
-                    </div>
-                  </div><hr>
-                  <div class="row" style="background-color: rgba(86,61,124,.15); padding-top: 10px;">
-                    <div class="col">
-                      <h6><b>Number of Bhakto:</b> <span id="noOfStaffDisplay"></span></h6>
-                    </div>
-                  </div><hr>
-                  <div id="tableContainer">
-                    <hr>
                   </div>
+                  <div class="row">
+                    <div class="col">
+                      <table cellpadding="5px" cellspacing="5px" style="width:100%; background-color: antiquewhite;">
+                        <tbody>
+                          <tr style="width:100%; background-color: antiquewhite;">
+                            <th style="text-align: left; font-size: 20px; font-weight: bolder;">
+                              Menu
+                            </th>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="row" style="padding-top: 10px;">
+                    <div class="col">
+                      <div id="menuContainer"></div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <table cellpadding="5px" cellspacing="5px" style="width:100%; background-color: antiquewhite;">
+                        <tbody>
+                          <tr style="width:100%; background-color: antiquewhite;">
+                            <th style="text-align: left; font-size: 20px; font-weight: bolder;">
+                              Summary of Grocery List
+                            </th>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <!-- <div class="row"
+                    style="display:flex; flex-wrap: wrap; margin-right: -15px; margin-left: -15px; background-color: rgba(86,61,124,.15);padding-top: 10px;">
+                    <div class="col">
+                      <h5><b></b></h5>
+                    </div>
+                  </div> -->
+                  <div class="row" style="padding-top: 10px;">
+                    <div class="col">
+                      <div id="summaryContainer">
+                        <table ccellpadding="5px" style="width: 100%;" class="table">
+                          <thead>
+                            <tr style="background-color: rgb(236, 236, 236); padding: 10px;">
+                              <th style="text-align: left; padding: 10px;">Ingredient Name</th>
+                              <th style="text-align: left; padding: 10px;">Ingredient Used For</th>
+                              <th style="text-align: left; padding: 10px;">Ingredient Total</th>
+                              <th style="text-align: left; padding: 10px;">Measurement</th>
+                            </tr>
+                          </thead>
+                          <tbody id="summaryTBody">
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <table cellpadding="5px" cellspacing="5px" style="width:100%; background-color: antiquewhite;">
+                        <tbody>
+                          <tr style="width:100%; background-color: antiquewhite;">
+                            <th style="text-align: left; font-size: 20px; font-weight: bolder;">
+                              Grocery List by Menu Item
+                            </th>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="row" style="padding-top: 10px;">
+                    <div class="col">
+                      <div id="tableContainer"></div>
+                    </div>
+                  </div>
+                  <hr>
                 </div>
-              </div>
-
-              <div id="summaryTab" class="tab-pane fade">
-                <div id="summaryContainer">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th>Ingredient Name</th>
-                        <th>Ingredient Used For</th>
-                        <th>Ingredient Total</th>
-                        <th>Measurement</th>
-                      </tr>
-                    </thead>
-                    <tbody id="summaryTBody">
-
-                    </tbody>
-                  </table>
-                </div>
-              </div>
             </div>
 
-          </div>
+            <script rel="display: none;" type="module">
+              import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js'
 
-          <script rel="display: none;" type="module">
-            import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js'
+              import { getDatabase, ref, get, onValue } from 'https://www.gstatic.com/firebasejs/9.10.0/firebase-database.js'
 
-            import { getDatabase, ref, get, onValue } from 'https://www.gstatic.com/firebasejs/9.10.0/firebase-database.js'
+              // TODO: Replace the following with your app's Firebase project configuration
+              const firebaseConfig = {
+                databaseUrl: 'https://hariprabodham-dee94-default-rtdb.firebaseio.com/',
+                projectId: 'hariprabodham-dee94'
+              };
 
-            // TODO: Replace the following with your app's Firebase project configuration
-            const firebaseConfig = {
-              databaseUrl: 'https://hariprabodham-dee94-default-rtdb.firebaseio.com/',
-              projectId: 'hariprabodham-dee94'
-            };
+              // Initialize Firebase
+              const app = initializeApp(firebaseConfig);
 
-            // Initialize Firebase
-            const app = initializeApp(firebaseConfig);
+              // Initialize Realtime Database and get a reference to the service
+              const db = getDatabase(app);
 
-            // Initialize Realtime Database and get a reference to the service
-            const db = getDatabase(app);
+              const dbRef = ref(db, '10OHFolC_gphW4mYtIAZe_37_qQPHSBy6l6-X5vS1cBA');
 
-            const dbRef = ref(db, '10OHFolC_gphW4mYtIAZe_37_qQPHSBy6l6-X5vS1cBA');
+              function listenToFirebase(dbRef) {
+                return new Promise((res, rej) => {
+                  onValue(dbRef, (snapshot) => {
+                    let origData = convertFirebaseObjectToObject(snapshot);
 
-            function listenToFirebase(dbRef) {
-              return new Promise((res, rej) => {
-                onValue(dbRef, (snapshot) => {
-                  let origData = convertFirebaseObjectToObject(snapshot);
+                    res(origData)
+                  });
+                })
+              }
 
-                  res(origData)
+              function convertFirebaseObjectToObject(data) {
+                let object = [];
+                data.forEach(datum => {
+                  object.push(JSON.parse(JSON.stringify(datum)));
                 });
-              })
-            }
+                console.log(object)
 
-            function convertFirebaseObjectToObject(data) {
-              let object = [];
-              data.forEach(datum => {
-                object.push(JSON.parse(JSON.stringify(datum)));
-              });
-              console.log(object)
+                return object;
+              }
 
-              return object;
-            }
+              $(document).ready(function () {
 
-            $(document).ready(function () {
+                $('.selectpicker').selectpicker();
 
-              $('.selectpicker').selectpicker();
+                $('.selectpicker').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) { });
 
-              $('.selectpicker').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) { });
+                $('.selectpicker').on('show.bs.select', function (e) {
+                });
 
-              $('.selectpicker').on('show.bs.select', function (e) {
-              });
+                $('.selectpicker').on('hide.bs.select', function (e) {
+                });
 
-              $('.selectpicker').on('hide.bs.select', function (e) {
+                $('.selectpicker').on('rendered.bs.select', function (e) { });
+
+                $('.selectpicker').on('refreshed.bs.select', function (e) { });
               });
 
-              $('.selectpicker').on('rendered.bs.select', function (e) { });
+              listenToFirebase(dbRef).then(data => {
+                menuItems = Object.values(data[2])
+                listOfIngredients = Object.values(data[1])
 
-              $('.selectpicker').on('refreshed.bs.select', function (e) { });
-            });
+                $('.selectpicker').empty();
+                $('.selectpicker').append('<option value="" selected>Select Menu Item</option>');
 
-            listenToFirebase(dbRef).then(data => {
-              menuItems = Object.values(data[2])
-              listOfIngredients = Object.values(data[1])
+                menuItems.forEach(datum => {
+                  $('.selectpicker').append('<option value="' + datum['MenuItemName'] + '">' + datum['MenuItemName'] + '</option>');
+                })
 
-              $('.selectpicker').empty();
-              $('.selectpicker').append('<option value="" selected>Select Menu Item</option>');
+                $('.selectpicker').selectpicker('refresh');
+              });
 
-              menuItems.forEach(datum => {
-                $('.selectpicker').append('<option value="' + datum['MenuItemName'] + '">' + datum['MenuItemName'] + '</option>');
-              })
-
-              $('.selectpicker').selectpicker('refresh');
-            });
-
-          </script>
-          <!-- Include Bootstrap and Selectpicker JS 
+            </script>
+            <!-- Include Bootstrap and Selectpicker JS 
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
         -->
+          </div>
         </div>
       </div>
-    </div>
   </section>
   <!-- end about section -->
 
