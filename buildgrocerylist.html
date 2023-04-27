@@ -403,8 +403,10 @@
                   <div class="col">
                     <div class="form-group">
                       <label for="date">Event Name: </label>
-                      <input type="text" class="form-control" id="eventName" placeholder="Enter Event Name"
-                        onchange="eventNameChanged()">
+                      <input type="text" class="form-control" id="eventName" placeholder="Enter Event Name" onchange="eventNameChanged()">
+                      <div class="invalid-feedback  eventName" style="color: red; display: none;">
+                          Please enter event name
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -462,23 +464,21 @@
                   <div class="row" style="padding-top: 10px;">
                     <div class="col">
                       <hr style="height: 15px; border: 0; box-shadow: inset 0 12px 12px -12px rgba(9, 84, 132);" />
-                      <table cellpadding="10px" style="width:100%;">
+                      <table cellpadding="5px" style="width:100%;">
                         <tr style="width:100%;">
                           <td style="width:20%;" rowspan="3">
-                            <img src="images/logo.jpg" width="65%" />
+                            <img src="images/logo.jpg" width="75%" />
                           </td>
-                          <td style="width:80%;">
-                            <h6><b>Event Name: </b><span id="eventNameDisplay"></span></h6>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <h6><b>Date:</b> <span id="reportGeneratedDate"></span></h6>
+                          <td style="width:80%; height: 50%; font-size: 20px;" colspan="2">
+                            <b>Event Name: </b><span id="eventNameDisplay"></span>
                           </td>
                         </tr>
                         <tr>
-                          <td>
-                            <h6><b>Number of Bhakto:</b> <span id="noOfStaffDisplay"></span></h6>
+                          <td style="width:50%; height: 50%; font-size: 20px;">
+                            <b>Date:</b> <span id="reportGeneratedDate"></span>
+                          </td>
+                          <td style="width:50%; font-size: 20px;">
+                            <b>Number of Bhakto:</b> <span id="noOfStaffDisplay"></span>
                           </td>
                         </tr>
                       </table>
