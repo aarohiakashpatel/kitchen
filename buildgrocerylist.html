@@ -38,6 +38,14 @@
 
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
 
+  <style type="text/css" media="print">
+    @page 
+    {
+        size: auto;   /* auto is the initial value */
+        margin: 0mm;  /* this affects the margin in the printer settings */
+    }
+</style>
+
   <!--Build Grocerry List Code-->
   <script>
     var menuItems = []
@@ -217,7 +225,7 @@
 
       // Create array object that will store the values for display of summary
       let summaryToDisplay = []
-
+      
       uniqueStaffIds.forEach(staff => {
         summaryToDisplay.push({
           ingredientName: staff,
@@ -230,9 +238,12 @@
       // Get summary values by staff ID
       summary.forEach(a => {
         summaryToDisplay.forEach(summ => {
-          if (a['IngredientName'] == summ.ingredientName) {
+          if(a['IngredientName'] == summ.ingredientName) {
             summ.ingredientName = a['IngredientName']
-            summ.ingredientUsedFor.push(a['MenuItemName'])
+            
+            if(!summ.ingredientUsedFor.includes(a['MenuItemName']))
+              summ.ingredientUsedFor.push(a['MenuItemName'])
+
             summ.ingredientTotal += (document.getElementById('noOfStaff').value / 100) * a['Quntity']
             summ.ingredientMeasurement = a['Level']
 
@@ -242,7 +253,7 @@
           }
         })
       })
-
+      
       // Display the values in summary tab
       let summaryContainer = document.getElementById('summaryContainer')
       const tbody = document.getElementById('summaryTBody')
@@ -286,7 +297,9 @@
       // doc.save(pdfTitle + '.pdf');
       let mywindow = window.open('', 'PRINT', 'height=650,width=900,top=100,left=150');
 
-      mywindow.document.write(`<html><head><title>Title</title>`);
+      let pdfTitle = document.getElementById("eventName").value + ' (' + document.getElementById('reportGeneratedDate').innerText + ')';
+
+      mywindow.document.write(`<html><head><title>${pdfTitle}</title>`);
       mywindow.document.write('</head><body>');
       mywindow.document.write(document.getElementById(divName).innerHTML);
       mywindow.document.write('</body></html>');
@@ -432,15 +445,17 @@
                     <div class="col">
                       <h6><b>Event Name: </b><span id="eventNameDisplay"></span></h6>
                     </div>
-                  </div><br>
+                  </div><hr>
                   <div class="row" style="background-color: rgba(86,61,124,.15); padding-top: 10px;">
                     <div class="col">
                       <h6><b>Grocery List for:</b> <span id="reportGeneratedDate"></span></h6>
                     </div>
+                  </div><hr>
+                  <div class="row" style="background-color: rgba(86,61,124,.15); padding-top: 10px;">
                     <div class="col">
                       <h6><b>Number of Bhakto:</b> <span id="noOfStaffDisplay"></span></h6>
                     </div>
-                  </div>
+                  </div><hr>
                   <div id="tableContainer">
                     <hr>
                   </div>
