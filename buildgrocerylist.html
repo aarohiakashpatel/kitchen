@@ -244,6 +244,7 @@
       function createHeader(table, ingredientNameHeaderText, ingredientQtyHeaderText, ingredientLevelHeaderText, ingredientNotesHeaderText) {
         // Header Creation
         const header = document.createElement('tr')
+        header.style = "border-bottom: 1px solid grey;"
 
         header.style = "background-color: rgb(236, 236, 236);"
 
@@ -276,7 +277,7 @@
       function createRow(table, ingredientNameCellText, ingredientQtyCellText, ingredientLevelCellText, ingredientNoteCellText) {
         // Row Creation
         const row = document.createElement('tr')
-
+        row.style = "border-bottom: 1px solid grey;"
 
         const ingredientNameCell = document.createElement('td')
         ingredientNameCell.textContent = ingredientNameCellText
@@ -284,7 +285,7 @@
         row.appendChild(ingredientNameCell)
 
         const ingredientQtyCell = document.createElement('td')
-        ingredientQtyCell.textContent = ingredientQtyCellText
+        ingredientQtyCell.textContent = parseFloat(ingredientQtyCellText).toFixed(2)
         ingredientQtyCell.style = "padding: 10px;"
         row.appendChild(ingredientQtyCell)
 
@@ -365,6 +366,7 @@
           // staff id, staff name, events attending, temp total
           // Row Creation
           const row = document.createElement('tr')
+          row.style = "border-bottom: 1px solid grey;"
 
           const ingredientNameCell = document.createElement('td')
           ingredientNameCell.textContent = ingredientName
@@ -379,7 +381,7 @@
           row.appendChild(ingredientUsedForCell)
 
           const ingredientTotalCell = document.createElement('td')
-          ingredientTotalCell.textContent = ingredientTotal
+          ingredientTotalCell.textContent = parseFloat(ingredientTotal).toFixed(2)
           ingredientTotalCell.style = "text-align: left; padding: 10px;"
           row.appendChild(ingredientTotalCell)
 
