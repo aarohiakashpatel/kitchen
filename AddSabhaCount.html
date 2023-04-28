@@ -12,7 +12,7 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
 
-  <title>Build Grocery List</title>
+  <title>Add Sabha Count</title>
 
   <!-- slider stylesheet -->
   <!-- slider stylesheet -->
@@ -446,11 +446,11 @@
                 <li class="nav-item">
                   <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item">
                   <a class="nav-link" href="buildgrocerylist.html"> Build Grocery List </a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="AddSabhaCount.html"> Add Sabha Count </a>
+                <li class="nav-item active">
+                  <a class="nav-link" href="how.html"> Add Sabha Count </a>
                 </li>
               </ul>
             </div>
@@ -467,7 +467,7 @@
     <div class="container">
       <div class="heading_container">
         <h2>
-          BUILD GROCERY LIST
+          Add Sabha Count
         </h2>
       </div>
       <div class="box">
@@ -476,183 +476,7 @@
         </div>
         <div class="detail-box" style="width: 100%; text-align: left;">
           <div class="container">
-            <form style="background-color: rgba(63, 61, 65, 0.15); padding: 10px;">
-              <div class="container">
-                <div class="row">
-                  <div class="col">
-                    <div class="form-group">
-                      <label for="date">Event Name: </label>
-                      <input type="text" class="form-control" id="eventName" placeholder="Enter Event Name"
-                        onchange="eventNameChanged()">
-                      <div class="invalid-feedback  eventName" style="color: red; display: none;">
-                        Please enter event name
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <div class="form-group">
-                      <label for="date">Select Event Date: </label>
-                      <div class="datepicker date input-group">
-                        <input type="date" class="form-control" id="date" placeholder="Select Event Date"
-                          onchange="dateChanged()">
-                        <div class="input-group-append">
-                          <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                        </div>
-                      </div>
-                      <div class="invalid-feedback date" style="color:red; display:none;">
-                        Please select a valid date.
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <div class="form-group">
-                      <label for="noOfStaff">Number of bhakto: </label>
-                      <input type="number" class="form-control" id="noOfStaff" placeholder="Enter number of bhakto"
-                        onchange="noOfStaffChanged()">
-                      <div class="invalid-feedback noOfStaff" style="color:red; display:none;">
-                        Please enter a value
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <div class="form-group">
-                      <label for="dropdown">Select a Menu Item to Add: </label>
-                      <select class="selectpicker form-control" data-live-search="true" id="dropdown">
-                        <option value="">Select an event</option>
-                        <option value="">Option 1</option>
-                        <option value="">Option 2</option>
-                      </select>
-                      <div class="invalid-feedback dropdown" style="color:red; display:none;">
-                        Please select an event
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <div class="btn btn-primary" onclick="addEvent()">Add Menu Item</div>
-                  </div>
-                </div>
-              </div>
-            </form>
-            <br>
-            <div class="container">
-              <div class="row">
-                <div class="col">
-                  <div class="btn btn-primary" onclick="exportMenuToPDF('printDiv')">Print Menu</div>
-                </div>
-              </div><br>
-              <div id="printDiv">
-                <!-- <div class="row" style="background-color: rgba(86,61,124,.15); padding-top: 10px;"> -->
-                <div class="row" style="padding-top: 10px;">
-                  <div class="col">
-                    <hr style="height: 15px; border: 0; box-shadow: inset 0 12px 12px -12px rgba(9, 84, 132);" />
-                    <table cellpadding="5px" style="width:100%;">
-                      <tr style="width:100%;">
-                        <td style="width:20%;" rowspan="3">
-                          <img src="images/logo.jpg" width="75%" />
-                        </td>
-                        <td style="width:80%; height: 50%; font-size: 20px;" colspan="2">
-                          <b>Event Name: </b><span id="eventNameDisplay"></span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="width:40%; height: 50%; font-size: 20px;">
-                          <b>Date:</b> <span id="reportGeneratedDate"></span>
-                        </td>
-                        <td style="width:60%; font-size: 20px;">
-                          <b>Number of Bhakto:</b> <span id="noOfStaffDisplay"></span>
-                        </td>
-                      </tr>
-                    </table>
-                    <hr style="border-top: 3px double #095484;" />
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <table cellpadding="5px" cellspacing="5px" style="width:100%; background-color: antiquewhite;">
-                      <tbody>
-                        <tr style="width:100%; background-color: antiquewhite;">
-                          <th style="text-align: left; font-size: 20px; font-weight: bolder;">
-                            Menu
-                          </th>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                <div class="row" style="padding-top: 10px;">
-                  <div class="col">
-                    <div id="menuContainer"></div>
-                  </div>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col">
-                    <table cellpadding="5px" cellspacing="5px" style="width:100%; background-color: antiquewhite;">
-                      <tbody>
-                        <tr style="width:100%; background-color: antiquewhite;">
-                          <th style="text-align: left; font-size: 20px; font-weight: bolder;">
-                            Summary of Grocery List
-                          </th>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                <!-- <div class="row"
-                    style="display:flex; flex-wrap: wrap; margin-right: -15px; margin-left: -15px; background-color: rgba(86,61,124,.15);padding-top: 10px;">
-                    <div class="col">
-                      <h5><b></b></h5>
-                    </div>
-                  </div> -->
-                <div class="row" style="padding-top: 10px;">
-                  <div class="col">
-                    <div id="summaryContainer">
-                      <table ccellpadding="5px" style="width: 100%;" class="table">
-                        <thead>
-                          <tr style="background-color: rgb(236, 236, 236); padding: 10px;">
-                            <th style="text-align: left; padding: 10px;">Ingredient Name</th>
-                            <th style="text-align: left; padding: 10px;">Ingredient Used For</th>
-                            <th style="text-align: left; padding: 10px;">Ingredient Total</th>
-                            <th style="text-align: left; padding: 10px;">Measurement</th>
-                          </tr>
-                        </thead>
-                        <tbody id="summaryTBody">
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-                <hr>
-                <div class="row">
-                  <div class="col">
-                    <table cellpadding="5px" cellspacing="5px" style="width:100%; background-color: antiquewhite;">
-                      <tbody>
-                        <tr style="width:100%; background-color: antiquewhite;">
-                          <th style="text-align: left; font-size: 20px; font-weight: bolder;">
-                            Grocery List by Menu Item
-                          </th>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                <div class="row" style="padding-top: 10px;">
-                  <div class="col">
-                    <div id="tableContainer"></div>
-                  </div>
-                </div>
-                <hr>
-              </div>
-            </div>
-
+            
             <script rel="display: none;" type="module">
               import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js'
 
@@ -692,23 +516,7 @@
                 return object;
               }
 
-              $(document).ready(function () {
-
-                $('.selectpicker').selectpicker();
-
-                $('.selectpicker').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) { });
-
-                $('.selectpicker').on('show.bs.select', function (e) {
-                });
-
-                $('.selectpicker').on('hide.bs.select', function (e) {
-                });
-
-                $('.selectpicker').on('rendered.bs.select', function (e) { });
-
-                $('.selectpicker').on('refreshed.bs.select', function (e) { });
-              });
-
+              
               listenToFirebase(dbRef).then(data => {
                 menuItems = Object.values(data[2])
                 listOfIngredients = Object.values(data[1])
