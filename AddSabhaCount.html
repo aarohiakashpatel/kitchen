@@ -49,7 +49,41 @@
 
   <!--Build Grocerry List Code-->
   <script>
-    
+    // For Events Tracker
+        function loadEventsTracker() {
+            // Display the values in events tracker display tab
+            const tbody = document.getElementById('eventsTrackerTBody')
+            tbody.innerHTML = ''
+
+            eventsTracker.forEach(event => {
+                // Only addRow once
+                addRow(event.Date, event['Event Name'], event['Event Description'], event['Number of Attendees'])
+
+                function addRow(date, eventName, eventDescription, noOfAttendees) {
+                    // staff id, staff name, events attending, temp total
+                    // Row Creation
+                    const row = document.createElement('tr')
+
+                    const dateCell = document.createElement('td')
+                    dateCell.textContent = date
+                    row.appendChild(dateCell)
+
+                    const eventNameCell = document.createElement('td')
+                    eventNameCell.textContent = eventName
+                    row.appendChild(eventNameCell)
+
+                    const eventDescriptionCell = document.createElement('td')
+                    eventDescriptionCell.textContent = eventDescription
+                    row.appendChild(eventDescriptionCell)
+
+                    const noOfAttendeesCell = document.createElement('td')
+                    noOfAttendeesCell.textContent = noOfAttendees
+                    row.appendChild(noOfAttendeesCell)
+
+                    tbody.appendChild(row)
+                }
+            })
+        }
 
   </script>
   <!--Build Grocerry List Code-->
