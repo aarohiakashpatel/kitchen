@@ -49,375 +49,7 @@
 
   <!--Build Grocerry List Code-->
   <script>
-    var menuItems = []
-    var listOfIngredients = []
-    var menuItemsAdded = []
-    var summaryEvents = []
-
-    function removeTableContainer(tableContainerId) {
-
-      let tableContID = "#" + tableContainerId + "Container"
-      let menuContID = "#" + tableContainerId + "menuList"
-
-      let indexToRemove = menuItemsAdded.findIndex((obj) => {
-        return obj.menuItemName.replace(/\s/g, '') == tableContainerId
-      })
-
-      if (indexToRemove !== -1) {
-        menuItemsAdded.splice(indexToRemove, 1)
-      }
-
-      //Remove item table
-      $(tableContID).remove()
-
-      //Remove item from menu
-      $(menuContID).remove()
-
-      loadSummaryEvents()
-
-    }
-
-    function eventNameChanged() {
-      const eventName = document.getElementById('eventName').value
-      let eventNameDisplay = document.getElementById('eventNameDisplay')
-
-      eventNameDisplay.innerHTML = eventName
-    }
-
-    function dateChanged() {
-      document.getElementById('reportGeneratedDate').innerText = document.getElementById('date').value
-    }
-
-    function noOfStaffChanged() {
-      const noOfStaff = document.getElementById('noOfStaff').value
-      let noOfStaffDisplay = document.getElementById('noOfStaffDisplay')
-
-      noOfStaffDisplay.innerHTML = noOfStaff
-    }
-
-    function addEvent() {
-
-      const selectedDate = document.getElementById('date').value
-      const noOfStaff = document.getElementById('noOfStaff').value
-      const eventMainName = document.getElementById('eventName').value
-
-      const eventDropdown = $('.selectpicker').val()
-      eventDropdownHasValue = eventDropdown
-
-      // Validation
-      const dateCheck = Date.parse(selectedDate)
-
-      if (selectedDate || !noOfStaff || isNaN(dateCheck)) {
-        let hasErrors = false;
-
-        //Validate Event
-        if (!eventMainName) {
-          const eventNameInputElement = document.getElementById('eventName')
-          eventNameInputElement.style.border = '1px solid red'
-          $('.invalid-feedback.eventName').show()
-          hasErrors = true
-        }
-        else {
-          const eventNameInputElement = document.getElementById('eventName')
-          eventNameInputElement.style.removeProperty('border')
-          $('.invalid-feedback.eventName').hide()
-        }
-
-        //Validate date
-        if (isNaN(dateCheck)) {
-          const dateInputElement = document.getElementById('date')
-          dateInputElement.style.border = '1px solid red'
-          $('.invalid-feedback.date').show()
-          $('.invalid-feedback.date').text('Please input a valid date')
-          hasErrors = true
-        }
-        else {
-          const minDate = new Date('1990-01-01')
-          const dateToCompare = new Date(selectedDate)
-
-          if (dateToCompare.getTime() < minDate.getTime()) {
-            const dateInputElement = document.getElementById('date')
-            dateInputElement.style.border = '1px solid red'
-            $('.invalid-feedback.date').show()
-            $('.invalid-feedback.date').text('The date should be greater than 1990-01-01')
-            hasErrors = true
-          }
-          else {
-            const dateInputElement = document.getElementById('date')
-            dateInputElement.style.removeProperty('border')
-            $('.invalid-feedback.date').hide()
-          }
-        }
-
-        if (!noOfStaff) {
-          const noOfStaffInputElement = document.getElementById('noOfStaff')
-          noOfStaffInputElement.style.border = '1px solid red'
-          $('.invalid-feedback.noOfStaff').show()
-          hasErrors = true
-        }
-        else {
-          const noOfStaffInputElement = document.getElementById('noOfStaff')
-          noOfStaffInputElement.style.removeProperty('border')
-          $('.invalid-feedback.noOfStaff').hide()
-        }
-
-        if (!eventDropdownHasValue) {
-          $('.invalid-feedback.dropdown').show()
-          hasErrors = true
-        }
-        else {
-          $('.invalid-feedback.dropdown').hide()
-        }
-
-        if (hasErrors) return
-      }
-
-      const currentEventNameId = $('.selectpicker').val().replace(/\s+/g, '')
-
-      if ($('#' + currentEventNameId + 'Table').length == 0) {
-        // If table does not exists, create table
-
-        let tableContainer = document.getElementById('tableContainer')
-        //<div class="btn btn-primary" onclick="printToPdf('${currentEventNameId}')">Print</div>
-        tableContainer.innerHTML = `<br>
-            <div id="${currentEventNameId}Container">
-                <div style="background-color: #c1d5f1; padding: 5px; font-size: 20px; font-weight: bold;" id="${currentEventNameId}Caption">${$('.selectpicker').val()}
-                </div>
-            
-                <table style="width: 100%;" cellpadding="5px" cellspacing="5px" class="table" id="${currentEventNameId}Table">
-                
-                </table>
-            </div>
-            ` + tableContainer.innerHTML
-
-        //update menu list
-        let menuItems = document.getElementById('menuContainer')
-        menuItems.innerHTML = `
-                <div class="row" id="${currentEventNameId}menuList">
-                  <div class="col">
-                    <p style="padding-left: 10px;font-weight: bold;font-size: 18px;">
-                      ${$('.selectpicker').val()}
-                      <button class="btn" onclick="removeTableContainer('${currentEventNameId}')">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                              <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
-                          </svg>
-                      </button>
-                    </p>
-                  </div>
-                </div>
-        ` + menuItems.innerHTML
-      }
-
-      const table = document.getElementById(currentEventNameId + 'Table')
-
-      table.innerHTML = ''
-
-      createHeader(table,
-        ingredientNameHeaderText = 'Ingredient Name',
-        ingredientQtyHeaderText = 'Quantity',
-        ingredientLevelHeaderText = 'Measurement',
-        ingredientNotesHeaderText = 'Notes')
-
-      listOfIngredients.forEach(member => {
-        const menuItemName = member['MenuItemName']
-        const ingredientName = member['IngredientName']
-        const ingredientQty = member['Quntity']
-        const ingredientLevel = member['Measurement']
-        const ingredientNotes = member['Notes']
-
-        if (menuItemName == $('.selectpicker').val())
-          createRow(table,
-            ingredientNameCellText = member['IngredientName'],
-            ingredientQtyCellText = (document.getElementById('noOfStaff').value / 100) * member['Quntity'],
-            ingredientLevelCellText = member['Level'],
-            ingredientNoteCellText = member['Notes']
-          )
-      })
-
-      if (menuItemsAdded.filter(menuItem => menuItem.menuItemName == $('.selectpicker').val()).length == 0) {
-        menuItemsAdded.push({
-          menuItemName: $('.selectpicker').val(),
-          eventContainer: `#${currentEventNameId}Container`
-        })
-      }
-
-
-      function createHeader(table, ingredientNameHeaderText, ingredientQtyHeaderText, ingredientLevelHeaderText, ingredientNotesHeaderText) {
-        // Header Creation
-        const header = document.createElement('tr')
-        header.style = "border-bottom: 1px solid grey;"
-
-        header.style = "background-color: rgb(236, 236, 236);"
-
-        const ingredientNameHeader = document.createElement('th')
-        ingredientNameHeader.textContent = ingredientNameHeaderText
-        ingredientNameHeader.style = "text-align: left; padding: 10px;"
-        header.appendChild(ingredientNameHeader)
-
-        const ingredientQtyHeader = document.createElement('th')
-        ingredientQtyHeader.textContent = ingredientQtyHeaderText
-        ingredientQtyHeader.style = "text-align: left; padding: 10px;"
-        header.appendChild(ingredientQtyHeader)
-
-        const ingredientLevelHeader = document.createElement('th')
-        ingredientLevelHeader.textContent = ingredientLevelHeaderText
-        ingredientLevelHeader.style = "text-align: left; padding: 10px;"
-        header.appendChild(ingredientLevelHeader)
-
-        const ingredientNotesHeader = document.createElement('th')
-        ingredientNotesHeader.textContent = ingredientNotesHeaderText
-        ingredientNotesHeader.style = "text-align: left; padding: 10px;"
-        header.appendChild(ingredientNotesHeader)
-
-        const thead = document.createElement('thead')
-        thead.appendChild(header)
-
-        table.appendChild(thead)
-      }
-
-      function createRow(table, ingredientNameCellText, ingredientQtyCellText, ingredientLevelCellText, ingredientNoteCellText) {
-        // Row Creation
-        const row = document.createElement('tr')
-        row.style = "border-bottom: 1px solid grey;"
-
-        const ingredientNameCell = document.createElement('td')
-        ingredientNameCell.textContent = ingredientNameCellText
-        ingredientNameCell.style = "padding: 10px;"
-        row.appendChild(ingredientNameCell)
-
-        const ingredientQtyCell = document.createElement('td')
-        ingredientQtyCell.textContent = parseFloat(ingredientQtyCellText).toFixed(2)
-        ingredientQtyCell.style = "padding: 10px;"
-        row.appendChild(ingredientQtyCell)
-
-        const ingredientLevelCell = document.createElement('td')
-        ingredientLevelCell.textContent = ingredientLevelCellText
-        ingredientLevelCell.style = "padding: 10px;"
-        row.appendChild(ingredientLevelCell)
-
-        const ingredientNoteCell = document.createElement('td')
-        ingredientNoteCell.textContent = ingredientNoteCellText
-        ingredientNoteCell.style = "padding: 10px;"
-        row.appendChild(ingredientNoteCell)
-
-        const tbody = document.createElement('tbody')
-        tbody.appendChild(row)
-
-        table.appendChild(tbody)
-      }
-
-      loadSummaryEvents()
-    }
-
-    // For Summary
-    function loadSummaryEvents() {
-      let summary = [];
-
-      menuItemsAdded.forEach(menuItemAdded => {
-        listOfIngredients.forEach(ingredientAdded => {
-          if (ingredientAdded['MenuItemName'] == menuItemAdded.menuItemName) {
-            summary.push(ingredientAdded)
-          }
-        })
-      })
-
-      // Get unique staff values
-      let uniqueStaffIds = [...new Set(summary.map(a => a['IngredientName']))]
-
-      // Create array object that will store the values for display of summary
-      let summaryToDisplay = []
-
-      uniqueStaffIds.forEach(staff => {
-        summaryToDisplay.push({
-          ingredientName: staff,
-          ingredientUsedFor: [],
-          ingredientTotal: 0,
-          ingredientMeasurement: ''
-        })
-      })
-
-      // Get summary values by staff ID
-      summary.forEach(a => {
-        summaryToDisplay.forEach(summ => {
-          if (a['IngredientName'] == summ.ingredientName) {
-            summ.ingredientName = a['IngredientName']
-
-            if (!summ.ingredientUsedFor.includes(a['MenuItemName']))
-              summ.ingredientUsedFor.push(a['MenuItemName'])
-
-            summ.ingredientTotal += (document.getElementById('noOfStaff').value / 100) * a['Quntity']
-            summ.ingredientMeasurement = a['Level']
-
-            //summ.Events.push(a['Event Name'])
-            //summ.StaffName = a['Staff Name']
-            //summ.Temp += (a['Temp Name'] * document.getElementById('noOfStaff').value)
-          }
-        })
-      })
-
-      // Display the values in summary tab
-      let summaryContainer = document.getElementById('summaryContainer')
-      const tbody = document.getElementById('summaryTBody')
-      tbody.innerHTML = ''
-
-      summaryToDisplay.forEach(summ => {
-        addRow(summ.ingredientName, summ.ingredientUsedFor, summ.ingredientTotal, summ.ingredientMeasurement)
-
-        function addRow(ingredientName, ingredientUsedFor, ingredientTotal, ingredientMeasurement) {
-          // staff id, staff name, events attending, temp total
-          // Row Creation
-          const row = document.createElement('tr')
-          row.style = "border-bottom: 1px solid grey;"
-
-          const ingredientNameCell = document.createElement('td')
-          ingredientNameCell.textContent = ingredientName
-          ingredientNameCell.style = "text-align: left; padding: 10px;"
-          row.appendChild(ingredientNameCell)
-
-          const ingredientUsedForCell = document.createElement('td')
-          ingredientUsedFor.forEach(menuItem => {
-            ingredientUsedForCell.textContent += `${menuItem}/`
-          })
-          ingredientUsedForCell.style = "text-align: left; padding: 10px;"
-          row.appendChild(ingredientUsedForCell)
-
-          const ingredientTotalCell = document.createElement('td')
-          ingredientTotalCell.textContent = parseFloat(ingredientTotal).toFixed(2)
-          ingredientTotalCell.style = "text-align: left; padding: 10px;"
-          row.appendChild(ingredientTotalCell)
-
-          const ingredientMeasurementCell = document.createElement('td')
-          ingredientMeasurementCell.textContent = ingredientMeasurement
-          ingredientMeasurementCell.style = "text-align: left; padding: 10px;"
-          row.appendChild(ingredientMeasurementCell)
-
-          tbody.appendChild(row)
-        }
-      })
-    }
-
-    function exportMenuToPDF(divName) {
-      // var doc = new jsPDF();
-      // doc.fromHTML(`<html><head><title>Print PDF</title></head><body>` + document.getElementById(divName).innerHTML + `</body></html>`);
-      // var pdfTitle = document.getElementById("eventName").value + ' (' + document.getElementById('reportGeneratedDate').innerText + ')';
-      // doc.save(pdfTitle + '.pdf');
-      let mywindow = window.open('', 'PRINT', 'height=650,width=900,top=100,left=150');
-
-      let pdfTitle = document.getElementById("eventName").value + ' (' + document.getElementById('reportGeneratedDate').innerText + ')';
-
-      mywindow.document.write(`<html><head><title>${pdfTitle}</title>`);
-      mywindow.document.write('</head><body>');
-      mywindow.document.write(document.getElementById(divName).innerHTML);
-      mywindow.document.write('</body></html>');
-
-      mywindow.document.close(); // necessary for IE >= 10
-      mywindow.focus(); // necessary for IE >= 10*/
-
-      mywindow.print();
-      mywindow.close();
-
-      return true;
-    }
+    
 
   </script>
   <!--Build Grocerry List Code-->
@@ -472,11 +104,40 @@
       </div>
       <div class="box">
         <div class="img-box">
-
+          
         </div>
         <div class="detail-box" style="width: 100%; text-align: left;">
           <div class="container">
-            
+            <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#eventsTrackerSubmitTab" data-toggle="tab">Submit</a>
+            </li>
+            <li>
+                <a href="#eventsTrackerDisplayTab" data-toggle="tab" onclick="loadEventsTracker()">Display</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="eventsTrackerSubmitTab" class="tab-pane fade in active">
+                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeptlgQ9usq3rpu-scQ6wCIEaXsf9WN-dq-mtDm_O9ClSTsWg/viewform?embedded=true" width="100%" height="1000" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+            </div>
+
+            <div id="eventsTrackerDisplayTab" class="tab-pane fade">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Event Name</th>
+                            <th>Event Description</th>
+                            <th>Number of Attendees</th>
+                        </tr>
+                    </thead>
+                    <tbody id="eventsTrackerTBody">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
             <script rel="display: none;" type="module">
               import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js'
 
