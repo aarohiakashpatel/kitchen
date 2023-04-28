@@ -660,9 +660,9 @@
 
               // TODO: Replace the following with your app's Firebase project configuration
               const firebaseConfig = {
-                databaseUrl: 'https://hariprabodham-dee94-default-rtdb.firebaseio.com/',
-                projectId: 'hariprabodham-dee94'
-              };
+                databaseUrl: 'https://harikitchen-3690-default-rtdb.firebaseio.com/',
+                projectId: 'harikitchen-3690'
+              }
 
               // Initialize Firebase
               const app = initializeApp(firebaseConfig);
@@ -710,8 +710,8 @@
               });
 
               listenToFirebase(dbRef).then(data => {
-                menuItems = Object.values(data[2])
-                listOfIngredients = Object.values(data[1])
+                menuItems = Object.values(data[3])
+                listOfIngredients = Object.values(data[2])
 
                 $('.selectpicker').empty();
                 $('.selectpicker').append('<option value="" selected>Select Menu Item</option>');
